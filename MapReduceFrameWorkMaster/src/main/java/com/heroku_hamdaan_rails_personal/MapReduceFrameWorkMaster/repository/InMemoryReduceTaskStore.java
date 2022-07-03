@@ -27,12 +27,11 @@ public class InMemoryReduceTaskStore implements IReduceTaskStore {
                 statusToTask.get(IN_PROGRESS).size() == 0;
     }
 
-    public int getUnstartedTask() {
-        if (statusToTask.get(NOT_STARTED).size() != 0) {
-            int taskToRun = statusToTask.get(NOT_STARTED).stream().findFirst().get();
-            return taskToRun;
+    public Integer getUnstartedTask() {
+        if (statusToTask.get(NOT_STARTED).size() == 0) {
+            return null;
         }
-        return -1;
+        return statusToTask.get(NOT_STARTED).stream().findFirst().get();
     }
 
     public TaskStatus updateTaskStatus(int taskToBeUpdated) {
