@@ -16,7 +16,7 @@ import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.FileInte
 
 public class Main {
     public static void main(String[] args) {
-        IFileInteractor fileSystemInteraction = new InMemoryFileInteraction("/Users/hamdaankhalid/Desktop/MapReduce/data", 4);
+        IFileInteractor fileSystemInteraction = new InMemoryFileInteraction("/Users/hamdaankhalid/Desktop/MapReduce/data/test", 4);
 
         // CHANGE THESE TO WHATEVER MAP AND REDUCE YOU WANT TO RUN
         IMapTask mapFunc = new WordCountMap();
