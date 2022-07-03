@@ -23,6 +23,9 @@ public class ReduceRunner {
             List<String> contentByLine = fileSystemInteraction.readLinesFromFile(filename);
             for (String line: contentByLine) {
                 String[] keyVal = line.split(":");
+                if(keyVal.length != 2) {
+                    continue;
+                }
                 String key = keyVal[0];
                 String val = keyVal[1];
                 if (sortedIntermediate.containsKey(key)) {

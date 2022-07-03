@@ -9,6 +9,6 @@ public class Helper {
     }
 
     public static int MOD_FILE_WRITE_DECIDE(String key, int reduceCount) {
-        return key.hashCode() % reduceCount;
+        return Math.abs(key.hashCode() % reduceCount);
     }
 }

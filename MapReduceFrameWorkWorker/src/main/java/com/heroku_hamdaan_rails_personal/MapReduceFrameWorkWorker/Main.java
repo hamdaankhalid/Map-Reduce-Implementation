@@ -35,12 +35,12 @@ public class Main {
                     break;
                 } else if (requestTaskResponse.getMapTask() == null && requestTaskResponse.getReduceTask() == null) {
                     System.out.println("Master responded with wait... resting for 5 seconds");
-                    // adds a break so we don't keep making consecutive calls
                     Helper.SLEEP(5);
                 } else if (requestTaskResponse.getMapTask() != null) {
                     System.out.println("Executing map task");
                     // run map task, and notify
                     MapTask mapTask = mapExecutor.map(requestTaskResponse.getMapTask());
+                    System.out.println("Map Task Executed "+ mapTask);
                     masterClient.notifyTaskCompleted(
                             new CompletedTaskBody(true, mapTask, null)
                     );
@@ -53,7 +53,9 @@ public class Main {
                     );
                 }
             } catch (Exception e) {
-                System.out.println("Error in execution"+ e.getMessage());
+                System.out.println("Error in execution"+ e);
+                System.out.println(e.getMessage());
+                Helper.SLEEP(3);
             }
         }
     }

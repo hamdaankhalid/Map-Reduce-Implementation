@@ -18,9 +18,12 @@ public class MapRunner {
     public MapTask map(MapTask mapTask) throws IOException {
         String filename = mapTask.getFileName();
         String content = fileSystemInteraction.readFromFile(filename);
-        String mapTaskNum = filename.split("_")[1];
+        String mapTaskNum = filename.substring("input".length());
         List<KeyValuePair> output = mapFunc.map(content);
-        fileSystemInteraction.serializeMapToDisk(output, mapTaskNum);
-        return new MapTask(mapTask.getFileName(), TaskStatus.COMPLETED);
+        if (output!=null) {
+            fileSystemInteraction.serializeMapToDisk(output, mapTaskNum);
+        }
+        // send it as in progress / it will be marked as completed by server
+        return new MapTask(filename, TaskStatus.IN_PROGRESS);
     }
 }

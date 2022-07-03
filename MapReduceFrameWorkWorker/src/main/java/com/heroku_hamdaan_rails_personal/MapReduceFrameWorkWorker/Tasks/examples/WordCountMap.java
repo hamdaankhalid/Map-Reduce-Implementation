@@ -9,7 +9,11 @@ public class WordCountMap implements IMapTask {
     public List<KeyValuePair> map(String content) {
        // given the content as string of one file count occurences of words and create list of key val pairs
         String[] words = content.split("\\s+");
-        Set<String> uniqueWords = new HashSet<String>(List.of(words));
+
+        if (words.length == 0) {
+            return null;
+        }
+        Set<String> uniqueWords = new HashSet<>(List.of(words));
         List<KeyValuePair> result = new ArrayList<>();
         for (String word : uniqueWords) {
             int count = 0;

@@ -8,6 +8,14 @@ public class RequestTaskResponse {
     private Integer reduceTask;
     private boolean isFinished;
 
+    public RequestTaskResponse(MapTask mapTask, Integer reduceTask, boolean isFinished) {
+        this.mapTask = mapTask;
+        this.reduceTask = reduceTask;
+        this.isFinished = isFinished;
+    }
+
+    public RequestTaskResponse() {}
+
     public MapTask getMapTask() {
         return mapTask;
     }
@@ -30,11 +38,5 @@ public class RequestTaskResponse {
 
     public void setFinished(boolean finished) {
         isFinished = finished;
-    }
-
-    public RequestTaskResponse(MapTask mapTask, Integer reduceTask, boolean isFinished) {
-        this.mapTask = mapTask;
-        this.reduceTask = reduceTask;
-        this.isFinished = isFinished;
     }
 }

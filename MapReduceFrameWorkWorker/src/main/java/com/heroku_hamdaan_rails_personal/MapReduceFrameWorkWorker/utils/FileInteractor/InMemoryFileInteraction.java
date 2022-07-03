@@ -3,10 +3,12 @@ package com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.FileInt
 import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.Helper;
 import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.KeyValuePair;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +28,39 @@ public class InMemoryFileInteraction implements  IFileInteractor {
 
 
     public void serializeMapToDisk(List<KeyValuePair> kvPairs, String mapTaskId) throws IOException {
+        System.out.println("Serializing Kv list from map of length " + kvPairs.size() + " to disk");
+
         for(KeyValuePair keyValuePair: kvPairs) {
             // write to a different file each of the results
-            int reduceBucket = Helper.MOD_FILE_WRITE_DECIDE(keyValuePair.getKey(), reduceCount);
-            String intermediateFileName = "reduce_" + mapTaskId + "_"+ reduceBucket+ "_intermediate";
-            File intermediateFile = new File(dataDirectory+"/"+intermediateFileName);
-            if (!intermediateFile.exists()) {
-                intermediateFile.createNewFile();
+            try {
+                int reduceBucket = Helper.MOD_FILE_WRITE_DECIDE(keyValuePair.getKey(), reduceCount);
+                String intermediateFileName = "reduce_" + mapTaskId + "_"+ reduceBucket+ "_intermediate";
+                if (Files.notExists(Path.of(dataDirectory + "/" + intermediateFileName))) {
+                    new File(dataDirectory+"/"+intermediateFileName).createNewFile();
+                }
+                FileWriter filewriter = new FileWriter(dataDirectory+"/"+intermediateFileName, true);
+                BufferedWriter bw = new BufferedWriter(filewriter);
+                bw.append(keyValuePair.getKey()+":"+ keyValuePair.getValue());
+                bw.newLine();
+                bw.close();
+            } catch (Exception e) {
+                System.out.println("ERROR While serializing kv pair to disk"+ keyValuePair.getKey() + e);
             }
-            FileWriter filewriter = new FileWriter(intermediateFile);
-            filewriter.append(keyValuePair.getKey()+":"+ keyValuePair.getValue());
         }
+
+        System.out.println("Serialized map to disk successfully for map task for file " + mapTaskId);
     }
 
     public void serializeReduceOutputToDisk(KeyValuePair reduceOutput, int reduceTask) throws IOException {
         String outputFileName = "Output_"+reduceTask;
-        File finalOutputFile = new File(dataDirectory+"/"+outputFileName);
-        if (!finalOutputFile.exists()) {
-            finalOutputFile.createNewFile();
+        if (Files.notExists(Path.of(dataDirectory + "/" + outputFileName))) {
+            new File(dataDirectory+"/"+outputFileName).createNewFile();
         }
-        FileWriter filewriter = new FileWriter(finalOutputFile);
-        filewriter.append(reduceOutput.getKey()+":"+reduceOutput.getValue());
+        FileWriter filewriter = new FileWriter(dataDirectory+"/"+outputFileName, true);
+        BufferedWriter bw = new BufferedWriter(filewriter);
+        bw.append(reduceOutput.getKey()+":"+reduceOutput.getValue());
+        bw.newLine();
+        bw.close();
     }
 
     public String readFromFile(String filename) throws IOException {
@@ -64,7 +78,12 @@ public class InMemoryFileInteraction implements  IFileInteractor {
         File[] allFiles = new File(this.dataDirectory).listFiles();
         for(File file: allFiles) {
             String filename = file.getName();
-            String reduceTaskNum = filename.split("_")[2];
+            if (!filename.substring(0, "reduce".length()).equals("reduce")) {
+                continue;
+            }
+
+            String reduceTaskNum = filename.split("_")[1];
+
             if (reduceTaskNum.equals(String.valueOf(reduceTask))) {
                 intermediateFiles.add(filename);
             }

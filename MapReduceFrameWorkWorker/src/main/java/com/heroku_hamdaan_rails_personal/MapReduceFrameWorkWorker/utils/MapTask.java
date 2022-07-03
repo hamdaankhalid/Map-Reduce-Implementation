@@ -9,6 +9,8 @@ public class MapTask {
         this.status = status;
     }
 
+    public MapTask() {}
+
     public String getFileName() {
         return fileName;
     }

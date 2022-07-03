@@ -21,8 +21,8 @@ public class MasterClient {
     }
 
     public RequestTaskResponse requestTask() throws URISyntaxException, IOException, InterruptedException {
-        URI uri = new URI(BASE_URI+"/task");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
+        URI uri = new URI(BASE_URI+"task");
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("Content-Type", "application/json").GET().build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -30,12 +30,12 @@ public class MasterClient {
     }
 
     public HttpResponse notifyTaskCompleted(CompletedTaskBody requestBody) throws URISyntaxException, IOException, InterruptedException {
-        URI uri = new URI(BASE_URI+"/task");
+        URI uri = new URI(BASE_URI+"task");
         String jsonifiedRequest = new ObjectMapper().writeValueAsString(requestBody);
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(
+        HttpRequest request = HttpRequest.newBuilder().uri(uri).setHeader("Content-Type", "application/json").POST(
                 HttpRequest.BodyPublishers.ofString(jsonifiedRequest)
         ).build();
 
-        return httpClient.send(request, null);
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }

@@ -11,8 +11,15 @@ public class CompletedTaskBody {
         this.reduceTask = reduceTask;
     }
 
-    public boolean isMapTask() {
+    public CompletedTaskBody() {
+    }
+
+    public boolean getIsMapTask() {
         return isMapTask;
+    }
+
+    public void setIsMapTask(boolean isMapTask) {
+        this.isMapTask = isMapTask;
     }
 
     public void setMapTask(boolean mapTask) {

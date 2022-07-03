@@ -9,7 +9,13 @@ public class WordCountReduce implements IReduceTask {
     public KeyValuePair reduce(String key, List<String> values) {
         int countSum = 0;
         for (String count: values) {
-            countSum += Integer.valueOf(count);
+            try {
+                countSum += Integer.valueOf(count);
+            } catch (Exception e) {
+                System.out.println("Error while reducing" + key + " =>" +values);
+                System.out.println(e);
+            }
+
         }
         return new KeyValuePair(key, String.valueOf(countSum));
     }
