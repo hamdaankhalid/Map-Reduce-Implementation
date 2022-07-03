@@ -3,9 +3,9 @@ package com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils;
 public class CompletedTaskBody {
     private boolean isMapTask;
     private MapTask mapTask;
-    private String reduceTask;
+    private Integer reduceTask;
 
-    public CompletedTaskBody(boolean isMapTask, MapTask mapTask, String reduceTask) {
+    public CompletedTaskBody(boolean isMapTask, MapTask mapTask, Integer reduceTask) {
         this.isMapTask = isMapTask;
         this.mapTask = mapTask;
         this.reduceTask = reduceTask;
@@ -27,11 +27,11 @@ public class CompletedTaskBody {
         this.mapTask = mapTask;
     }
 
-    public String getReduceTask() {
+    public Integer getReduceTask() {
         return reduceTask;
     }
 
-    public void setReduceTask(String reduceTask) {
+    public void setReduceTask(Integer reduceTask) {
         this.reduceTask = reduceTask;
     }
 }

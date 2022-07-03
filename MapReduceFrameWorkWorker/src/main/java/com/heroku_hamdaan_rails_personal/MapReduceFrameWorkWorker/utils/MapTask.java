@@ -3,12 +3,10 @@ package com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils;
 public class MapTask {
     private String fileName;
     private TaskStatus status;
-    private int mapTaskId;
 
-    public MapTask(String filename, TaskStatus status, int mapTaskId) {
+    public MapTask(String filename, TaskStatus status) {
         this.fileName = filename;
         this.status = status;
-        this.mapTaskId = mapTaskId;
     }
 
     public String getFileName() {
@@ -25,13 +23,5 @@ public class MapTask {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
-    }
-
-    public int getMapTaskId() {
-        return mapTaskId;
-    }
-
-    public void setMapTaskId(int mapTaskId) {
-        this.mapTaskId = mapTaskId;
     }
 }

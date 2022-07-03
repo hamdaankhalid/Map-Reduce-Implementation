@@ -6,8 +6,8 @@ import java.util.List;
 
 /**
  * All reduce tasks will need to follow this interace
- *  reduce (k2,list(v2)) → list(v2)
+ *  reduce (k2,list(v2)) → k2, v3
  */
 public interface IReduceTask {
-    List<KeyValuePair> reduce(String content);
+    KeyValuePair reduce(String key, List<String> values);
 }

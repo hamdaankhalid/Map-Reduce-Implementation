@@ -6,12 +6,11 @@ import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.KeyValue
 import java.util.*;
 
 public class WordCountReduce implements IReduceTask {
-    public List<KeyValuePair> reduce(String content) {
-        return new ArrayList<KeyValuePair>(
-                Arrays.asList(
-                        new KeyValuePair("test", "1")
-                )
-        );
+    public KeyValuePair reduce(String key, List<String> values) {
+        int countSum = 0;
+        for (String count: values) {
+            countSum += Integer.valueOf(count);
+        }
+        return new KeyValuePair(key, String.valueOf(countSum));
     }
-
 }

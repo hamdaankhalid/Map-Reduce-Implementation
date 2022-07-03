@@ -4,8 +4,7 @@ import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.FileInte
 import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.KeyValuePair;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ReduceRunner {
@@ -17,10 +16,26 @@ public class ReduceRunner {
         this.fileSystemInteraction = fileSystemInteraction;
     }
 
-    public String reduce(String runReduceOnFile) throws IOException {
-        String contentToReduce = fileSystemInteraction.readFromFile(runReduceOnFile);
-        List<KeyValuePair> reduceOutput = reduceFunc.reduce(contentToReduce);
-        fileSystemInteraction.serializeReduceOutputToDisk(reduceOutput, runReduceOnFile);
-        return runReduceOnFile;
+    public Integer reduce(Integer reduceTask) throws IOException {
+        List<String> intermediateFiles = fileSystemInteraction.getIntermediateFiles(reduceTask);
+        Map<String, List<String>> sortedIntermediate = new HashMap<>();
+        for (String filename: intermediateFiles) {
+            List<String> contentByLine = fileSystemInteraction.readLinesFromFile(filename);
+            for (String line: contentByLine) {
+                String[] keyVal = line.split(":");
+                String key = keyVal[0];
+                String val = keyVal[1];
+                if (sortedIntermediate.containsKey(key)) {
+                    sortedIntermediate.get(key).add(val);
+                } else {
+                    sortedIntermediate.put(key, new ArrayList<>(List.of(val)));
+                }
+            }
+        }
+        for(String key: sortedIntermediate.keySet()) {
+            KeyValuePair reduced = reduceFunc.reduce(key, sortedIntermediate.get(key));
+            fileSystemInteraction.serializeReduceOutputToDisk(reduced, reduceTask);
+        }
+        return reduceTask;
     }
 }

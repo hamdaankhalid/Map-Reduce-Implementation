@@ -19,10 +19,8 @@ public class MapRunner {
         String filename = mapTask.getFileName();
         String content = fileSystemInteraction.readFromFile(filename);
         String mapTaskNum = filename.split("_")[1];
-
         List<KeyValuePair> output = mapFunc.map(content);
         fileSystemInteraction.serializeMapToDisk(output, mapTaskNum);
-
-        return new MapTask(mapTask.getFileName(), TaskStatus.COMPLETED, mapTask.getMapTaskId());
+        return new MapTask(mapTask.getFileName(), TaskStatus.COMPLETED);
     }
 }
