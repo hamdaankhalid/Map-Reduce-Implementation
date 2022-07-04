@@ -61,6 +61,7 @@ public class InMemoryFileInteraction implements  IFileInteractor {
         bw.append(reduceOutput.getKey()+":"+reduceOutput.getValue());
         bw.newLine();
         bw.close();
+        System.out.println(outputFileName);
     }
 
     public String readFromFile(String filename) throws IOException {
@@ -82,7 +83,7 @@ public class InMemoryFileInteraction implements  IFileInteractor {
                 continue;
             }
 
-            String reduceTaskNum = filename.split("_")[1];
+            String reduceTaskNum = filename.split("_")[2];
 
             if (reduceTaskNum.equals(String.valueOf(reduceTask))) {
                 intermediateFiles.add(filename);

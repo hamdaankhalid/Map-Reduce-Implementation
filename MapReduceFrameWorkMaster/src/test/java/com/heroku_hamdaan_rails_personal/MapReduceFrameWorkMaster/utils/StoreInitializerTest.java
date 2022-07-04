@@ -48,9 +48,6 @@ class StoreInitializerTest {
 
         List<Integer> notStarted = new ArrayList<>(result.get(TaskStatus.NOT_STARTED));
 
-        System.out.println(notStarted.size());
-        System.out.println(expectedNotStartedSet.size());
-
         assert(expectedNotStartedSet.containsAll(notStarted));
 
         assertEquals(expectedNotStartedSet.size() , result.get(TaskStatus.NOT_STARTED).size());

@@ -59,10 +59,9 @@ public class MasterService {
     }
 
     public void markTaskComplete(TaskCompletedRequest taskCompletedRequest) {
-        if (taskCompletedRequest.isMapTask()) {
+        if (taskCompletedRequest.getIsMapTask()) {
             mapTaskStore.updateTaskStatus(taskCompletedRequest.getMapTask(), TaskStatus.COMPLETED);
         } else {
-            // is a reduce task
             reduceTaskStore.updateTaskStatus(taskCompletedRequest.getReduceTask());
         }
     }

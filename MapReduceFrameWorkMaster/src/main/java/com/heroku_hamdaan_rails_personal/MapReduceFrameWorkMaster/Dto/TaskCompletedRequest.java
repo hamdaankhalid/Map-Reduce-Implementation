@@ -13,11 +13,11 @@ public class TaskCompletedRequest {
         this.reduceTask = reduceTask;
     }
 
-    public boolean isMapTask() {
+    public boolean getIsMapTask() {
         return isMapTask;
     }
 
-    public void setMapTask(boolean mapTask) {
+    public void setIsMapTask(boolean mapTask) {
         isMapTask = mapTask;
     }
 

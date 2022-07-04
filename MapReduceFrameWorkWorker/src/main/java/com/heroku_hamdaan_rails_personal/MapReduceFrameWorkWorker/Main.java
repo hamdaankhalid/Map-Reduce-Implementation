@@ -17,9 +17,11 @@ import com.heroku_hamdaan_rails_personal.MapReduceFrameWorkWorker.utils.FileInte
 public class Main {
     public static void main(String[] args) {
         IFileInteractor fileSystemInteraction = new InMemoryFileInteraction("/Users/hamdaankhalid/Desktop/MapReduce/data/test", 4);
+
         // CHANGE THESE TO WHATEVER MAP AND REDUCE YOU WANT TO RUN
         IMapTask mapFunc = new WordCountMap();
         IReduceTask reduceFunc = new WordCountReduce();
+
         MapRunner mapExecutor = new MapRunner(mapFunc , fileSystemInteraction);
         ReduceRunner reduceExecutor = new ReduceRunner(reduceFunc, fileSystemInteraction);
         MasterClient masterClient = new MasterClient();
@@ -48,6 +50,7 @@ public class Main {
                     System.out.println("Executing reduce task");
                     // run reduce task, and notify
                     Integer reducedOn = reduceExecutor.reduce(requestTaskResponse.getReduceTask());
+                    System.out.println("Reduce Task Executed for "+ reducedOn);
                     masterClient.notifyTaskCompleted(
                             new CompletedTaskBody(false, null, reducedOn)
                     );

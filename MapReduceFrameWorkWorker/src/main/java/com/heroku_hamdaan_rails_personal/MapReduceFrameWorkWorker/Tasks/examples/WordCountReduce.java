@@ -14,6 +14,7 @@ public class WordCountReduce implements IReduceTask {
             } catch (Exception e) {
                 System.out.println("Error while reducing" + key + " =>" +values);
                 System.out.println(e);
+                throw e;
             }
 
         }

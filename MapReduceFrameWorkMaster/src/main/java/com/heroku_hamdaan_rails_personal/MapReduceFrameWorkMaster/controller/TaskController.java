@@ -19,7 +19,8 @@ public class TaskController {
 
     @GetMapping("/task")
     public ResponseEntity<TaskResponse> getTask() {
-        return ResponseEntity.status(HttpStatus.OK).body(masterService.getTaskToExecute());
+        TaskResponse taskToExecute = masterService.getTaskToExecute();
+        return ResponseEntity.status(HttpStatus.OK).body(taskToExecute);
     }
 
     @PostMapping("/task")

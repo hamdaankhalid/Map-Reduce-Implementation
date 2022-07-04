@@ -18,6 +18,9 @@ public class ReduceRunner {
 
     public Integer reduce(Integer reduceTask) throws IOException {
         List<String> intermediateFiles = fileSystemInteraction.getIntermediateFiles(reduceTask);
+
+        System.out.println(intermediateFiles);
+
         Map<String, List<String>> sortedIntermediate = new HashMap<>();
         for (String filename: intermediateFiles) {
             List<String> contentByLine = fileSystemInteraction.readLinesFromFile(filename);
@@ -35,7 +38,10 @@ public class ReduceRunner {
                 }
             }
         }
+
+        System.out.println("REDUCE: " + reduceTask);
         for(String key: sortedIntermediate.keySet()) {
+            System.out.println(key + " : " + sortedIntermediate.get(key));
             KeyValuePair reduced = reduceFunc.reduce(key, sortedIntermediate.get(key));
             fileSystemInteraction.serializeReduceOutputToDisk(reduced, reduceTask);
         }
